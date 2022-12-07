@@ -1,0 +1,12 @@
+stages:
+- prepare
+- test
+- compile
+- release
+
+include:
+- local: .gitlab/ci/_common.gitlab-ci.yml
+- local: .gitlab/ci/prepare.gitlab-ci.yml
+- local: .gitlab/ci/test.gitlab-ci.yml
+- local: .gitlab/ci/compile.gitlab-ci.yml
+- local: .gitlab/ci/release.gitlab-ci.yml

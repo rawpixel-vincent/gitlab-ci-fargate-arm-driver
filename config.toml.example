@@ -1,0 +1,19 @@
+LogLevel = "info"
+LogFile = "fargate.log"
+LogFormat = "text"
+
+[Fargate]
+    Cluster = "cluster-name"
+    Region = "us-east-1"
+    Subnet = "subnet-XYZ"
+    SecurityGroup = "sg-XYZ"
+    TaskDefinition = "my-task-definition:1"
+    EnablePublicIP = true
+    PlatformVersion = "LATEST"
+
+[TaskMetadata]
+    Directory = "/fargate-driver/"
+
+[SSH]
+    Username = "root"
+    Port = 22

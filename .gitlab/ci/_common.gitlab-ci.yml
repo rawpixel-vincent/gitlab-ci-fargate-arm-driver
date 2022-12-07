@@ -1,0 +1,39 @@
+variables:
+  DOCKER_VERSION: "19.03.5"
+  GO_VERSION: "1.13.8"
+  ALPINE_VERSION: "3.11"
+  RELEASE_INDEX_GEN_VERSION: "latest"
+  GOPATH: $CI_PROJECT_DIR/.go
+  CI_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/custom-executor-drivers/fargate/ci:go${GO_VERSION}-alpine${ALPINE_VERSION}-2
+  SSH_SERVICE_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/custom-executor-drivers/fargate/ssh_service:go${GO_VERSION}-alpine${ALPINE_VERSION}-1
+
+default:
+  tags:
+  - gitlab-org
+
+cache:
+  paths:
+  - .go/pkg/mod/
+
+image: ${CI_IMAGE}
+
+before_script:
+- unset GPG_KEY
+
+.merge_request_pipelines:
+  only:
+    refs:
+    - merge_requests
+    - master@gitlab-org/ci-cd/custom-executor-drivers/fargate
+    - /\Av[0-9]+\.[0-9]+\.[0-9]+(-rc[0-9]+)?\Z/@gitlab-org/ci-cd/custom-executor-drivers/fargate
+
+.docker_in_docker:
+  image: docker:${DOCKER_VERSION}-git
+  services:
+  - docker:${DOCKER_VERSION}-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376/
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
+  tags:
+  - gitlab-org-docker

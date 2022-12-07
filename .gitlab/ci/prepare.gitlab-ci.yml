@@ -1,0 +1,27 @@
+prepare CI image:
+  extends:
+  - .docker_in_docker
+  stage: prepare
+  script:
+  - apk add --no-cache make
+  - make prepare_ci_image
+  only:
+    refs:
+    - merge_requests
+    changes:
+    - dockerfiles/ci/*
+    - .gitlab/ci/prepare.gitlab-ci.yml
+
+prepare SSH Service image:
+  extends:
+  - .docker_in_docker
+  stage: prepare
+  script:
+  - apk add --no-cache make
+  - make prepare_ssh_service_image
+  only:
+    refs:
+    - merge_requests
+    changes:
+    - dockerfiles/ssh_service/*
+    - .gitlab/ci/prepare.gitlab-ci.yml

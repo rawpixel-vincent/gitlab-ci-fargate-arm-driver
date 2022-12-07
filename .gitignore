@@ -1,0 +1,7 @@
+/build/
+/.tests/
+/.tmp/
+
+/config.toml
+/fargate.log
+/gl-code-quality-report.json

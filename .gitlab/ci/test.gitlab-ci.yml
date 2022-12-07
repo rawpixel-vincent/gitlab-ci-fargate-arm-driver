@@ -1,0 +1,65 @@
+tests:
+  extends:
+  - .merge_request_pipelines
+  stage: test
+  services:
+  - name: ${SSH_SERVICE_IMAGE}
+    alias: ssh
+  script:
+  - make tests
+  coverage: /^total:\s+\(statements\)\s+\d+.\d+\%/
+  artifacts:
+    reports:
+      junit: .tests/junit.xml
+    paths:
+    - .tests/coverage.html
+    - .tests/coverage.txt
+    expire_in: 7d
+
+tests race:
+  extends:
+  - .merge_request_pipelines
+  stage: test
+  image: golang:${GO_VERSION}-buster
+  variables:
+    CGO_ENABLED: 1
+  script:
+  - make tests_race
+  artifacts:
+    reports:
+      junit: .tests/junit-race.xml
+
+code quality:
+  extends:
+  - .merge_request_pipelines
+  stage: test
+  image: golangci/golangci-lint:v1.24.0
+  variables:
+    REPORT_FILE: gl-code-quality-report.json
+    LINT_FLAGS: "--color never --deadline 15m"
+    OUT_FORMAT: code-climate
+  script:
+  - make lint | tee ${REPORT_FILE}
+  timeout: 15 minutes
+  artifacts:
+    reports:
+      codequality: ${REPORT_FILE}
+    paths:
+    - ${REPORT_FILE}
+    expire_in: 7d
+  cache: {}
+
+check mocks:
+  extends:
+  - .merge_request_pipelines
+  stage: test
+  script:
+  - make check_mocks
+
+check go modules:
+  extends:
+  - .merge_request_pipelines
+  stage: test
+  cache: {}
+  script:
+  - make check_modules

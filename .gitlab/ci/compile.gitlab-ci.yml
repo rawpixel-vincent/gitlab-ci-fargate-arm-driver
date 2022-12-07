@@ -1,0 +1,14 @@
+.compile: &compile
+  extends:
+  - .merge_request_pipelines
+  stage: compile
+  script:
+  - export platforms=$(echo $CI_JOB_NAME | sed 's|compile ||')
+  - make compile_all BUILD_PLATFORMS="-osarch='$platforms'"
+  dependencies: []
+  artifacts:
+    paths:
+    - build/
+    expire_in: 7d
+
+compile linux/386 linux/amd64 linux/arm linux/arm64: *compile
