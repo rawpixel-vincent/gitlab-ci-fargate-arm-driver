@@ -1,3 +1,20 @@
+# WHAT IS THIS
+
+Fork of https://gitlab.com/maub/fargate/-/tree/add_arm_arch
+Cause I needed the arm driver - and the repo looked stale.
+
+**check the source repository for updates first**
+https://gitlab.com/maub/fargate/-/tree/add_arm_arch
+
+### HOW TO USE
+
+- install go
+- install gox `go get github.com/mitchellh/gox && go install github.com/mitchellh/gox`
+- compile `make compile_all`
+- drivers available in `./build`
+
+# NOTES FROM ORIGINAL REPO
+
 ## Fargate Custom Executor driver
 
 This project contains a driver for [GitLab Runner's Custom
