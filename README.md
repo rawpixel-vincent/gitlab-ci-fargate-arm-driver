@@ -1,5 +1,7 @@
 # WHAT IS THIS
 
+### update: arm is now supported: https://gitlab.com/gitlab-org/ci-cd/custom-executor-drivers/fargate
+
 Fork of https://gitlab.com/maub/fargate/-/tree/add_arm_arch
 Cause I needed the arm driver - and the repo looked stale.
 
